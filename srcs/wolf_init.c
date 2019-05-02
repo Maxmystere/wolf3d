@@ -12,9 +12,30 @@
 
 #include "wolf3d.h"
 
-static void		void_wolf(t_wolf *wolf)
+static int		secure_wolf(t_wolf *wolf)
 {
+	int fd;
+
+	if ((fd = open(TTFWOLF, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(TTFIMPACT, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(WALLBLUE, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(WALL, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(GOLD, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
+	if ((fd = open(TEST, O_RDONLY | O_NOFOLLOW)) < 0)
+		return (-1);
+	close(fd);
 	ft_bzero(wolf, sizeof(t_wolf));
+	return (0);
 }
 
 static t_wall	load_texture(t_wolf *wolf, const char *file)
@@ -46,10 +67,10 @@ static t_wall	load_texture(t_wolf *wolf, const char *file)
 
 void			lil_wolf_init(t_wolf *wolf)
 {
-	wolf->wall[0] = load_texture(wolf, "./ressources/textures/wall_blue.xpm");
-	wolf->wall[1] = load_texture(wolf, "./ressources/textures/wall.xpm");
-	wolf->wall[2] = load_texture(wolf, "./ressources/textures/plaqueor.xpm");
-	wolf->wall[3] = load_texture(wolf, "./ressources/textures/test.xpm");
+	wolf->wall[0] = load_texture(wolf, WALLBLUE);
+	wolf->wall[1] = load_texture(wolf, WALL);
+	wolf->wall[2] = load_texture(wolf, GOLD);
+	wolf->wall[3] = load_texture(wolf, TEST);
 }
 
 t_wolf			*wolf_init(void)
@@ -58,7 +79,8 @@ t_wolf			*wolf_init(void)
 
 	if (!(wolf = (t_wolf *)malloc(sizeof(t_wolf))))
 		return (NULL);
-	void_wolf(wolf);
+	if (secure_wolf(wolf))
+		return (NULL);
 	if (sdl_start(wolf, "Wolf 3D"))
 		return (NULL);
 	wolf->ui.btnarr[0] = add_wolf_button(wolf);

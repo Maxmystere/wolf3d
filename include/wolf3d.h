@@ -33,6 +33,10 @@
 # define INT_MAX 2147483647
 # define TTFWOLF "ressources/font/wolfenstein.ttf"
 # define TTFIMPACT "ressources/font/impact.ttf"
+# define WALLBLUE "ressources/textures/wall_blue.xpm"
+# define WALL "ressources/textures/wall.xpm"
+# define GOLD "ressources/textures/plaqueor.xpm"
+# define TEST "ressources/textures/test.xpm"
 
 typedef struct			s_vct2
 {
