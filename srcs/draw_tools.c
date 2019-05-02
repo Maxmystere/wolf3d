@@ -49,11 +49,11 @@ void		draw_part_texture(t_wolf *wolf, t_ray ray, int *istart, int length)
 	ctexture.x = (ctexture.x - (int)ctexture.x) * (wolf->wall[ray.polar].w);
 	ctexture.y = 0;
 	dty = (wolf->wall[ray.polar].h) / (float)length;
-	if (length > wolf->sdl.size.y)
+	if (length >= wolf->sdl.size.y)
 	{
 		ctexture.y = (((float)length - (float)wolf->sdl.size.y) / 2);
 		ctexture.y = ctexture.y / (float)length * wolf->wall[ray.polar].h;
-		length = wolf->sdl.size.y - 1;
+		length = wolf->sdl.size.y;
 	}
 	i = 0;
 	while (i < length)
@@ -77,10 +77,11 @@ void		draw_column(t_wolf *wolf, t_ray ray, int num)
 	i = -1;
 	dist = (ray.hor < ray.ver && ray.hor > -0.1) ? ray.hor : ray.ver;
 	dist *= cos(fabs(wolf->rot - ray.angle) * PI / 180.00);
-	column_size = (wolf->sdl.size.y * 0.8) / dist;
-	sky_size = (wolf->sdl.size.y - column_size) / 2.0;
+	column_size = (1080 * 0.8 * (wolf->sdl.size.x / 1920.0)) / dist;
+	sky_size = (wolf->sdl.size.y - (int)column_size) / 2;
 	iprint = num;
 	draw_part(wolf, &iprint, sky_size, BLUE_SKY);
 	draw_part_texture(wolf, ray, &iprint, column_size);
+	sky_size += ((wolf->sdl.size.y - (int)column_size) % 2);
 	draw_part(wolf, &iprint, sky_size, PINK_FLOOR);
 }
