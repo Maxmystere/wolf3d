@@ -6,12 +6,13 @@
 #    By: tbottini <tbottini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/15 18:09:49 by tbottini          #+#    #+#              #
-#    Updated: 2019/04/28 16:50:49 by tbottini         ###   ########.fr        #
+#    Updated: 2019/06/10 14:16:09 by tbottini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 include libft/include.mk
 include wolf.mk
+
 NAME			:=		wolf3d
 
 CC				:=		gcc
@@ -33,6 +34,8 @@ OBJDIR			:=		objs
 
 SRCDIR			:=		srcs
 
+FOLDER			:=		objs
+
 NB_SRCS			:=		$(shell ls srcs/ | wc -l)
 
 NB_OBJS			=		$(shell ls objs/ | wc -l | sed -e 's/[^0-9]//g')
@@ -51,6 +54,9 @@ SRCS_LIBFT		:=		$(patsubst %.c,libft/%.c,$(SRCS_LIBFT))
 
 all				:		$(NAME)
 
+$(FOLDER)		:
+	@mkdir -p $(FOLDER)
+
 $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/wolf3d.h libft/libft.h
 	@printf '\rCompilation $(NAME)\n'
 	@printf '[\e[94m%*s' $(FILL_BAR) | tr ' ' '#'
@@ -58,7 +64,7 @@ $(OBJDIR)/%.o	:		$(SRCDIR)/%.c $(SRCS_LIBFT) include/wolf3d.h libft/libft.h
 	@$(CC) $(CFLAGS) $(INCLUDE) -c -o $@ $<
 	@printf '\033[M\033[A'
 
-$(NAME)			:		$(OBJS)
+$(NAME)			:	$(FOLDER) $(OBJS)
 	@make -C libft/
 	@$(CC) $(CFLAGS) $(LIB) $(INCLUDE) -o $(NAME) $(OBJS)
 	@sips -i ressources/icon/icon.ico
